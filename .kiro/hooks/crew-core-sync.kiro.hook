@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Keep the Crew Scribes core in sync",
+  "description": "The Crew Scribes app ships a copy of src/core so it can be installed on its own. Any edit to the core re-syncs the copy, so the agents always follow the same rules the property tests check.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["src/core/**/*.js", "src/data/**/*.js"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Run `npm run sync:crew`, then `node --test test/mcp.test.js`. If the MCP test fails, the change to the core broke a rule the scribes rely on: report which requirement in .kiro/specs/crew-scribes/requirements.md is affected before changing anything else."
+  }
+}

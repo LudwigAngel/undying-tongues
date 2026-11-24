@@ -1,0 +1,66 @@
+// Crew Scribes suggestions: what an AI agent may propose and how the family applies it.
+// Rules (.kiro/specs/crew-scribes): a suggestion never overwrites family text, always names
+// its agent, rationale and confidence, and is applied only by a person.
+import { normalize } from './answer.js';
+import { tokenize, segmentsFrom } from './harvest.js';
+import { parseAnalysis } from './morph.js';
+
+export const FIELDS = ['meaning', 'alt', 'morph'];
+export const CONFIDENCE = ['low', 'medium', 'high'];
+const APOS = /'/g;
+
+/** Returns a list of human-readable problems; empty list means valid. */
+export function validateSuggestion(s, stories) {
+  const errors = [];
+  const story = stories.find((x) => x.id === s?.storyId);
+  if (!story) return ['unknown story'];
+  const segs = segmentsFrom(story.marks ?? [], story.duration);
+  if (!Number.isInteger(s.segment) || s.segment < 0 || s.segment >= segs.length) return ['unknown segment'];
+  const text = story.texts?.[s.segment] ?? { qu: '', meaning: '' };
+  if (!FIELDS.includes(s.field)) errors.push(`field must be one of ${FIELDS.join(', ')}`);
+  if (!CONFIDENCE.includes(s.confidence)) errors.push(`confidence must be one of ${CONFIDENCE.join(', ')}`);
+  if (!String(s.agent ?? '').trim()) errors.push('agent is required');
+  if (String(s.rationale ?? '').trim().length < 8) errors.push('rationale must explain the suggestion');
+  const value = String(s.value ?? '').trim();
+  if (!value) errors.push('value is empty');
+  if (value.length > 300) errors.push('value is too long');
+  if (!normalize(text.qu)) errors.push('segment has no transcript yet: the family transcribes first');
+
+  if (s.field === 'meaning' && String(text.meaning ?? '').trim()) {
+    errors.push('the family already wrote a meaning for this segment');
+  }
+  if (s.field === 'alt' || s.field === 'morph') {
+    const token = normalize(s.token);
+    if (!token) errors.push('token is required for alt and morph');
+    else if (!tokenize(text.qu).includes(token)) errors.push('token is not in this segment');
+    else if (s.field === 'alt') {
+      const v = normalize(value);
+      if (v === token) errors.push('alt must differ from the word');
+      if ((v.match(APOS) ?? []).length < (token.match(APOS) ?? []).length) errors.push('alt drops an ejective apostrophe');
+      if (v.includes(' ')) errors.push('alt must be one word');
+    } else {
+      const a = parseAnalysis(value);
+      if (!a || !a.suffixes.length) errors.push('morph must look like "root + -suffix"');
+      else if (a.root + a.suffixes.join('') !== token) errors.push('morph parts do not rebuild the word');
+    }
+  }
+  return errors;
+}
+
+/**
+ * Apply an accepted suggestion to a story. Pure: returns a new story.
+ * Only `meaning` changes story text, and only when the family left it empty.
+ * `alt` and `morph` are stored as notes on the story for the harvest view.
+ */
+export function applySuggestion(story, s) {
+  const texts = (story.texts ?? []).map((t) => ({ ...t }));
+  const notes = { ...(story.notes ?? {}) };
+  if (s.field === 'meaning') {
+    const t = texts[s.segment] ?? { qu: '', meaning: '' };
+    if (!String(t.meaning ?? '').trim()) texts[s.segment] = { ...t, meaning: String(s.value).trim() };
+  } else {
+    const key = normalize(s.token);
+    notes[key] = { ...(notes[key] ?? {}), [s.field]: String(s.value).trim() };
+  }
+  return { ...story, texts, notes };
+}

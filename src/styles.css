@@ -147,6 +147,19 @@ main > div:has(.type-form) { max-width: 640px; margin: 0 auto; }
 .proposals .gl { display: inline; }
 .proposals input { flex: 1 1 160px; width: auto; }
 .voice-dot { background: none; border: 0; cursor: pointer; padding: 0; }
+.scribes { margin-top: 1.5rem; border-color: #3f3459; box-shadow: 0 0 40px -20px var(--ghost); }
+.scribes h3, .inbox h3 { margin-top: 0; color: var(--ghost); }
+.badge { background: var(--ghost); color: var(--night); border-radius: 999px; padding: .2rem .7rem; font-size: .85rem; font-weight: bold; }
+.ok-status { color: var(--moss); }
+.morph { color: var(--ghost); font-family: ui-monospace, Consolas, monospace; font-size: .85rem; }
+.alt { color: var(--moss); font-size: .85rem; }
+.inbox { margin-bottom: 1.5rem; }
+.sug { justify-content: space-between; border-style: solid; }
+.sug-body { display: grid; gap: .15rem; flex: 1 1 260px; }
+.sug.conf-high { border-color: var(--moss); }
+.sug.conf-medium { border-color: var(--ember); }
+.sug.conf-low { border-color: var(--blood); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
 
 .foot { text-align: center; color: var(--ash); font-size: .85rem; padding: 1rem 1rem 2rem; }
 

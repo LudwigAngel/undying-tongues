@@ -19,6 +19,12 @@ own voice and the family's own variety. This app does, offline and on the device
   answer or say it aloud and grade yourself. Answer checking understands Quechua spelling: any
   apostrophe glyph works, but the ejective apostrophe (`p'unchay`) is required.
 - **Talk with the ancestor**: a short scripted conversation in Runasimi, with hints.
+- **Story harvest**: an elder records a whole story; the family cuts it into phrases, transcribes
+  them, and approves phrases and words that become candles playing that exact part of the story.
+  Long words are split automatically when the root is known (`urqupi` → `urqu + -pi`, "on the mountain").
+- **Crew Scribes** ([`crew-scribes/`](crew-scribes/README.md)): a Kiro Crew app with three AI agents
+  and its own MCP server. They read the exported transcripts (never the audio) and suggest meanings,
+  word breakdowns and accepted spellings; the family accepts or rejects each one in the app.
 - English / Spanish interface, keyboard accessible, respects `prefers-reduced-motion`.
 
 ## Run it
@@ -27,7 +33,7 @@ No build step. Any static server works:
 ```powershell
 npm install      # only installs fast-check for the tests
 npm run serve    # http://127.0.0.1:5173
-npm test         # 18 property-based tests
+npm test         # property-based tests + an end-to-end MCP test
 ```
 
 **Live demo: https://ludwigangel.github.io/undying-tongues/**

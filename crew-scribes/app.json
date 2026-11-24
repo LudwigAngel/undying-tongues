@@ -1,0 +1,36 @@
+{
+  "name": "crew-scribes",
+  "version": "0.1.0",
+  "displayName": "Crew Scribes",
+  "description": "Three AI scribes that help a family turn an elder's recorded stories into lessons for Undying Tongues. They read the family's transcripts (never the audio) and propose meanings, word breakdowns (root + suffixes) and accepted spellings. Every proposal is validated by the same rules the app's property tests check, written to a separate suggestions file, and applied only when a person accepts it in the app.",
+  "author": "LudwigAngel",
+  "minKiroCrewVersion": "0.1.0",
+  "iconPath": "assets/icon.png",
+  "tags": ["language", "education", "quechua", "endangered-languages", "agents"],
+  "highlights": [
+    "Glossator, Morphologist and Orthographer work in parallel on one family archive",
+    "Reads transcripts only: the elder's voice never reaches a model",
+    "Every proposal is validated before it is saved: no overwriting family text, ejective apostrophes kept, word breakdowns must rebuild the word",
+    "Writes only a sibling suggestions file; the family accepts or rejects each card in the app"
+  ],
+  "useCases": [
+    "After a grandmother records a story and the family transcribes it, ask the crew to run the scribes on the exported archive, then accept the meanings you agree with in the app",
+    "When a child keeps getting 'orqo' marked wrong, let scribe-orthographer propose 'urqu' as an accepted spelling and approve it",
+    "When a story is full of long words, run scribe-morphologist to see each one split into root and suffixes before teaching it"
+  ],
+  "configuration": [
+    "Needs Node.js 18+ on PATH and Python 3 for the bundled undying-archive MCP server. Export the archive from the Undying Tongues app (Story harvest -> Export family archive) and give the crew its absolute path."
+  ],
+  "platform": { "os": ["macos", "linux", "windows"] },
+  "agents": ["agents/glossator.json", "agents/morphologist.json", "agents/orthographer.json"],
+  "skills": ["skills/scribe-rules"],
+  "mcpServers": {
+    "undying-archive": {
+      "command": "python",
+      "args": ["mcp/server.py"],
+      "autoApprove": ["archive_summary", "list_segments", "lookup_word", "suffix_table", "list_suggestions"]
+    }
+  },
+  "dependencies": { "commands": ["node"] },
+  "permissions": { "network": false, "storage": false }
+}

@@ -30,5 +30,14 @@ apostrophe is always wrong.
 - `i18n-parity`: editing UI files checks that English and Spanish have the same keys.
 - `vocabulary-guard`: editing vocabulary re-checks it against the language-ethics steering.
 
+## MCP and Kiro Crew app (`crew-scribes/`)
+A custom MCP server, `undying-archive`, gives three Crew agents (Glossator, Morphologist,
+Orthographer) a least-privilege view of a family archive: text only, no audio, and the only write is
+`propose`, which validates each suggestion with the same core the web app uses and appends it to a
+separate file. The validation rules are property-tested (S2, S3), so the guardrails on the agents
+are the same code the tests check, not a prompt. The skill `scribe-rules` tells the coordinator to
+run the three scribes in parallel with `spawn_run`. A hook re-syncs the core into the app and re-runs
+the stdio MCP test whenever the core changes.
+
 ## Still to write
-MCP usage, custom agents / Kiro Crew app, and what changed versus vibe coding.
+Custom agents in practice (a real run on a recorded story), and what changed versus vibe coding.

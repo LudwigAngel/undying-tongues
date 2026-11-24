@@ -1,0 +1,6 @@
+{
+  "name": "undying-archive-mcp",
+  "private": true,
+  "type": "module",
+  "description": "Tool runner for the Undying Archive MCP server. No dependencies."
+}

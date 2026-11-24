@@ -1,0 +1,83 @@
+// Quechua is agglutinative: urqu-pi "on the mountain", wasi-y-kuna "my houses".
+// This module only splits a word when its ROOT is already a known word on the altar,
+// so it never invents a root (see .kiro/steering/language-ethics.md). Unknown roots are
+// left to the Crew Scribes, whose proposals a person must approve.
+import { normalize } from './answer.js';
+
+// Well-attested Southern Quechua suffixes (Cusco-Collao). Gloss in English and Spanish.
+export const SUFFIXES = [
+  { form: 'kuna', en: 'plural', es: 'plural' },
+  { form: 'manta', en: 'from, about', es: 'desde, acerca de' },
+  { form: 'nchik', en: 'our (inclusive)', es: 'nuestro (inclusivo)' },
+  { form: 'kama', en: 'until, up to', es: 'hasta' },
+  { form: 'paq', en: 'for', es: 'para' },
+  { form: 'man', en: 'to, toward', es: 'hacia' },
+  { form: 'wan', en: 'with', es: 'con' },
+  { form: 'yki', en: 'your', es: 'tu' },
+  { form: 'lla', en: 'just, only (affectionate)', es: 'solo, nomás (afectivo)' },
+  { form: 'cha', en: 'little (diminutive)', es: 'diminutivo' },
+  { form: 'chu', en: 'question / negation', es: 'pregunta / negación' },
+  { form: 'taq', en: 'and, then (emphasis)', es: 'y, entonces (énfasis)' },
+  { form: 'pas', en: 'also, even', es: 'también, incluso' },
+  { form: 'raq', en: 'still, first', es: 'todavía, primero' },
+  { form: 'pi', en: 'in, at, on', es: 'en' },
+  { form: 'ta', en: 'object marker', es: 'marca de objeto' },
+  { form: 'qa', en: 'topic marker', es: 'marca de tópico' },
+  { form: 'mi', en: 'I know it (witnessed)', es: 'lo sé (evidencial directo)' },
+  { form: 'si', en: 'they say (reported)', es: 'dicen que (reportativo)' },
+  { form: 'ña', en: 'already, now', es: 'ya' },
+  { form: 'pa', en: 'of (after consonant)', es: 'de (tras consonante)' },
+  { form: 'y', en: 'my (after vowel)', es: 'mi (tras vocal)' },
+  { form: 'n', en: 'his, her (after vowel)', es: 'su (tras vocal)' },
+];
+
+const BY_FORM = new Map(SUFFIXES.map((s) => [s.form, s]));
+const MAX_SUFFIXES = 5;
+
+/**
+ * Split `word` into a known root plus suffixes from SUFFIXES.
+ * Returns { root, suffixes: [{form, en, es}] } or null when no known root explains the word.
+ * A word that is itself known returns { root: word, suffixes: [] }.
+ * Among several analyses the longest root wins (fewest suffixes); ties keep table order.
+ */
+export function analyse(word, knownRoots) {
+  const w = normalize(word);
+  if (!w || w.includes(' ')) return null;
+  const roots = knownRoots instanceof Set ? knownRoots : new Set([...knownRoots].map(normalize));
+  if (roots.has(w)) return { root: w, suffixes: [] };
+
+  for (let cut = w.length - 1; cut >= 2; cut--) {
+    const root = w.slice(0, cut);
+    if (!roots.has(root)) continue;
+    const tail = splitTail(w.slice(cut), MAX_SUFFIXES);
+    if (tail) return { root, suffixes: tail.map((f) => BY_FORM.get(f)) };
+  }
+  return null;
+}
+
+// Split a string into a sequence of known suffix forms, longest-first, depth-limited.
+function splitTail(rest, depth) {
+  if (rest === '') return [];
+  if (depth === 0) return null;
+  for (const s of SUFFIXES) {
+    if (rest.startsWith(s.form)) {
+      const more = splitTail(rest.slice(s.form.length), depth - 1);
+      if (more) return [s.form, ...more];
+    }
+  }
+  return null;
+}
+
+/** "urqu + -pi" */
+export function formatAnalysis(a) {
+  return [a.root, ...a.suffixes.map((s) => `-${s.form}`)].join(' + ');
+}
+
+/** Parse "urqu + -pi + -qa" back into parts; null if malformed. */
+export function parseAnalysis(text) {
+  const parts = String(text ?? '').split('+').map((p) => p.trim()).filter(Boolean);
+  if (!parts.length || parts[0].startsWith('-')) return null;
+  const [root, ...rest] = parts;
+  if (!rest.every((p) => /^-\S+$/u.test(p))) return null;
+  return { root: normalize(root), suffixes: rest.map((p) => normalize(p.slice(1))) };
+}

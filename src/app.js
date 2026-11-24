@@ -229,6 +229,7 @@ function renderPractice() {
   );
   answerBox.append(
     el('p', { class: 'qu big' }, w.qu),
+    w.morph ? el('p', { class: 'morph' }, w.morph) : '',
     el('div', { class: 'grades' },
       [['forgot', 1], ['hard', 3], ['good', 4], ['easy', 5]].map(([k, g]) =>
         el('button', { class: `btn grade g${g}`, type: 'button', onclick: () => grade(g) }, t(k)))),
@@ -284,7 +285,7 @@ function renderAncestor() {
 function render() {
   if (view === 'harvest') {
     renderHarvest({
-      main, el, t,
+      main, el, t, lang: () => prefs.lang,
       knownForms: () => words().flatMap((w) => [w.qu, ...(w.alt ?? [])]),
       addFamilyWord: (w) => {
         if (family.some((x) => x.id === w.id || normalize(x.qu) === normalize(w.qu))) return;
