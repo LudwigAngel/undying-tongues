@@ -30,7 +30,7 @@ npm run serve    # http://127.0.0.1:5173
 npm test         # 18 property-based tests
 ```
 
-Live demo: _GitHub Pages URL goes here_.
+**Live demo: https://ludwigangel.github.io/undying-tongues/**
 
 ## How Kiro was used
 See [`docs/KIRO.md`](docs/KIRO.md). In short: steering for product, tech and language ethics,

@@ -101,7 +101,9 @@ function renderAltar() {
         el('p', { class: 'muted' }, t('vitalityHint')),
         el('p', { class: 'stats' },
           el('strong', {}, String(list.length)), ` ${t('words')} · `,
-          el('strong', {}, String(voiceIds.size)), ` ${t('voices')}`))),
+          el('strong', {}, String(voiceIds.size)), ` ${t('voices')}`),
+        v === 0 ? el('button', { class: 'btn primary first-light', type: 'button',
+          onclick: () => document.querySelector('[data-view=practice]').click() }, t('firstLight')) : null)),
     ...deckEls,
   );
 }

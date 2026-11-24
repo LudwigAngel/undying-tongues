@@ -78,7 +78,9 @@ input { background: var(--night); color: var(--bone); border: 1px solid #3a3150;
 .deck h3 { font-variant: small-caps; letter-spacing: .08em; color: var(--ash); border-bottom: 1px solid #2a2338; padding-bottom: .3rem; }
 .candles { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: .75rem; }
 .word { position: relative; background: var(--night-2); border: 1px solid #2a2338; border-radius: var(--radius); padding: .9rem .6rem .7rem; display: grid; justify-items: center; text-align: center; gap: .15rem; }
-.qu { font-weight: bold; font-size: 1.1rem; }
+.qu { font-weight: bold; font-size: 1.1rem; overflow-wrap: anywhere; hyphens: auto; }
+.word .qu { max-width: 100%; }
+.first-light { margin-top: .6rem; }
 .gl { color: var(--ash); font-size: .9rem; display: block; }
 .voice-dot { position: absolute; top: .4rem; right: .5rem; font-size: .8rem; }
 
