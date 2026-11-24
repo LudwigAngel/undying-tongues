@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Keep English and Spanish in sync",
+  "description": "When UI strings or views change, make sure every key exists in both languages and no visible text is hardcoded.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["src/i18n.js", "src/app.js", "index.html"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Compare the keys of STRINGS.en and STRINGS.es in src/i18n.js and list any missing ones. Then scan src/app.js for visible text that is not read through t(...) and move it into i18n.js with both translations."
+  }
+}

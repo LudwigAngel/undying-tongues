@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Undying Tongues · Lenguas que no mueren</title>
+  <meta name="description" content="Elders record their language, children keep its candles lit. A spaced-repetition altar for endangered languages, starting with Quechua." />
+  <meta name="theme-color" content="#0b0a12" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>" />
+  <link rel="stylesheet" href="./src/styles.css" />
+</head>
+<body>
+  <a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+  <header class="top">
+    <div class="brand">
+      <span class="brand-flame" aria-hidden="true"></span>
+      <div>
+        <h1 data-i18n="title">Undying Tongues</h1>
+        <p class="tagline" data-i18n="tagline">A language dies when its last voice goes quiet. Keep the candles lit.</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button id="lang-toggle" class="ghost-btn" type="button" aria-label="Cambiar a español">ES</button>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" data-view="altar" aria-selected="true" data-i18n="tabAltar">Altar</button>
+    <button role="tab" data-view="elder" aria-selected="false" data-i18n="tabElder">Elder's voice</button>
+    <button role="tab" data-view="practice" aria-selected="false" data-i18n="tabPractice">Keep it alive</button>
+    <button role="tab" data-view="ancestor" aria-selected="false" data-i18n="tabAncestor">Talk with the ancestor</button>
+  </nav>
+
+  <main id="main" tabindex="-1"></main>
+
+  <footer class="foot">
+    <span data-i18n="footer">Vocabulary is a draft pending review by native speakers. Recordings never leave this device.</span>
+  </footer>
+
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>

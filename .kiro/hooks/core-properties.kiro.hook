@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Run property tests when the core changes",
+  "description": "Any edit to the pure core or its tests re-runs the fast-check suite and fixes the code (not the property) if a counterexample appears.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["src/core/**/*.js", "test/**/*.test.js"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Run `npm test`. If a property fails, read the shrunk counterexample, explain which requirement in .kiro/specs/candle-altar/requirements.md it violates, and fix the implementation. Only change a property if the requirement itself is wrong, and say so explicitly."
+  }
+}

@@ -1,0 +1,4 @@
+node_modules/
+.DS_Store
+Thumbs.db
+# NOTE: .kiro/ must stay committed (Kiroween rules). Do not add it here.

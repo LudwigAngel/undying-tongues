@@ -1,0 +1,14 @@
+{
+  "name": "undying-tongues",
+  "version": "0.1.0",
+  "description": "Elders record their language, children keep its candles lit. Spaced repetition for endangered languages, starting with Quechua.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\"",
+    "serve": "npx --yes http-server . -a 127.0.0.1 -p 5173 -c-1"
+  },
+  "devDependencies": {
+    "fast-check": "^3.23.2"
+  }
+}

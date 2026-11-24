@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Guard the vocabulary",
+  "description": "When vocabulary data changes, check it against the language-ethics steering before it reaches children.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": ["src/data/**/*.js"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the changed vocabulary against .kiro/steering/language-ethics.md: every word has qu/en/es, ejective apostrophes are kept, regional variants go in `alt`, `reviewed` stays false unless a native speaker signed off, and no invented sentences were added. Then run `npm test` because R4.6 checks the deck for duplicate forms."
+  }
+}

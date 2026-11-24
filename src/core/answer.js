@@ -1,0 +1,35 @@
+// Answer checking for Quechua (Runasimi) input.
+// Rules come from .kiro/steering/language-ethics.md:
+//  - case, extra spaces and punctuation never make an answer wrong;
+//  - the many apostrophe glyphs phones produce are the same letter;
+//  - the apostrophe itself is NOT optional: in Southern Quechua it marks an
+//    ejective consonant (p'unchay "day" vs punchay), so dropping it is an error.
+
+const APOSTROPHES = /[\u2018\u2019\u02BC\u02BB\u0060\u00B4\u2032]/g;
+const PUNCTUATION = /[¿?¡!.,;:"«»()\[\]{}\-–—_/\\]/g;
+
+export function normalize(text) {
+  return String(text ?? '')
+    .toLowerCase()
+    .normalize('NFC')
+    .replace(APOSTROPHES, "'")
+    .replace(PUNCTUATION, ' ')
+    .replace(/\s+/gu, ' ')
+    .trim();
+}
+
+/** True when the input equals any accepted form. */
+export function isCorrect(input, accepted) {
+  const got = normalize(input);
+  if (!got) return false;
+  return accepted.some((form) => normalize(form) === got);
+}
+
+/** True when the input starts with an accepted prefix and adds something after it (e.g. "sutiyqa Rosa"). */
+export function startsWithAny(input, prefixes) {
+  const got = normalize(input);
+  return prefixes.some((p) => {
+    const pre = normalize(p);
+    return got.length > pre.length && got.startsWith(pre + ' ');
+  });
+}
