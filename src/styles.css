@@ -26,6 +26,7 @@ body {
 }
 button, input { font: inherit; }
 :focus-visible { outline: 2px solid var(--ember-2); outline-offset: 3px; }
+main:focus, main:focus-visible { outline: none; }
 
 .skip { position: absolute; left: -999px; }
 .skip:focus { left: 1rem; top: 1rem; background: var(--bone); color: var(--night); padding: .5rem 1rem; z-index: 9; }
@@ -127,6 +128,25 @@ input { background: var(--night); color: var(--bone); border: 1px solid #3a3150;
 .msg.child { background: #3a2412; border: 1px solid #6b4220; justify-self: end; }
 .hint { max-width: 640px; margin: .75rem auto; color: var(--ash); }
 main > div:has(.type-form) { max-width: 640px; margin: 0 auto; }
+
+/* harvest */
+.steps { color: var(--ash); padding-left: 1.2rem; }
+.spaced { margin-top: .9rem; align-items: center; }
+.timer { font-variant-numeric: tabular-nums; color: var(--ember-2); }
+.player { width: 100%; margin-top: .75rem; }
+.segments { list-style: none; padding: 0; display: grid; gap: .6rem; counter-reset: seg; }
+.segment { background: var(--night-2); border: 1px solid #2a2338; border-radius: var(--radius); padding: .8rem 1rem; display: grid; gap: .45rem; }
+.segment input { width: 100%; }
+.seg-head { display: flex; gap: .5rem; flex-wrap: wrap; }
+.ghost-btn.small, .btn.small { font-size: .85rem; padding: .3rem .8rem; }
+.harvest { margin-top: 1.5rem; }
+.harvest h3 { color: var(--ember-2); }
+.harvest h4 { color: var(--ash); font-variant: small-caps; letter-spacing: .06em; margin: 1rem 0 .4rem; }
+.proposals { list-style: none; padding: 0; display: grid; gap: .45rem; }
+.proposals li { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; background: var(--night-2); border: 1px dashed #4a3d66; border-radius: var(--radius); padding: .6rem .9rem; }
+.proposals .gl { display: inline; }
+.proposals input { flex: 1 1 160px; width: auto; }
+.voice-dot { background: none; border: 0; cursor: pointer; padding: 0; }
 
 .foot { text-align: center; color: var(--ash); font-size: .85rem; padding: 1rem 1rem 2rem; }
 

@@ -4,12 +4,20 @@ import { newCard, review } from './core/srs.js';
 import { vitality, candleState, practiceQueue } from './core/vitality.js';
 import { isCorrect, startsWithAny } from './core/answer.js';
 import * as store from './storage.js';
+import { renderHarvest, playClip } from './views/harvest.js';
+import { normalize } from './core/answer.js';
 
 const main = document.getElementById('main');
 const prefs = store.loadPrefs();
 let cards = store.loadCards();
+let family = store.loadFamily();
 let voiceIds = new Set();
 let view = 'altar';
+
+const FAMILY_DECK = { id: 'family', title: { en: 'Family words', es: 'Palabras de la familia' } };
+const words = () => [...ALL_WORDS, ...family.map((w) => ({ ...w, deck: 'family' }))];
+const decks = () => (family.length ? [...DECKS, { ...FAMILY_DECK, words: family }] : DECKS);
+const hasVoice = (w) => voiceIds.has(w.id) || Boolean(w.clip);
 
 const t = (k) => STRINGS[prefs.lang][k] ?? STRINGS.en[k] ?? k;
 const gloss = (w) => w[prefs.lang] ?? w.en;
@@ -28,7 +36,7 @@ function cardFor(wordId) {
   cards[wordId] ??= newCard(wordId, Date.now());
   return cards[wordId];
 }
-const allCards = () => ALL_WORDS.map((w) => cardFor(w.id));
+const allCards = () => words().map((w) => cardFor(w.id));
 
 // ---------- chrome ----------
 function applyLang() {
@@ -64,7 +72,14 @@ function candle(state, label) {
 
 async function playVoice(wordId) {
   const v = await store.getVoice(wordId);
-  if (!v) return false;
+  if (!v) {
+    const w = family.find((x) => x.id === wordId);
+    if (!w?.clip) return false;
+    const story = await store.getStory(w.clip.storyId);
+    if (!story) return false;
+    await playClip(story.blob, w.clip.start, w.clip.end);
+    return true;
+  }
   const url = URL.createObjectURL(v.blob);
   const audio = new Audio(url);
   audio.addEventListener('ended', () => URL.revokeObjectURL(url));
@@ -78,7 +93,7 @@ function renderAltar() {
   const list = allCards();
   const v = vitality(list, now);
   const pct = Math.round(v * 100);
-  const deckEls = DECKS.map((d) =>
+  const deckEls = decks().map((d) =>
     el('section', { class: 'deck' },
       el('h3', {}, d.title[prefs.lang]),
       el('ul', { class: 'candles' },
@@ -88,7 +103,8 @@ function renderAltar() {
             candle(st, `${w.qu}: ${t(st)}`),
             el('span', { class: 'qu' }, w.qu),
             el('span', { class: 'gl' }, gloss(w)),
-            voiceIds.has(w.id) ? el('span', { class: 'voice-dot', title: t('voices') }, '🎙') : null);
+            hasVoice(w) ? el('button', { class: 'voice-dot', type: 'button', title: t('play'), 'aria-label': `${t('play')} ${w.qu}`,
+              onclick: () => playVoice(w.id) }, '🎙') : null);
         }))));
 
   main.replaceChildren(
@@ -101,7 +117,7 @@ function renderAltar() {
         el('p', { class: 'muted' }, t('vitalityHint')),
         el('p', { class: 'stats' },
           el('strong', {}, String(list.length)), ` ${t('words')} · `,
-          el('strong', {}, String(voiceIds.size)), ` ${t('voices')}`),
+          el('strong', {}, String(words().filter(hasVoice).length)), ` ${t('voices')}`),
         v === 0 ? el('button', { class: 'btn primary first-light', type: 'button',
           onclick: () => document.querySelector('[data-view=practice]').click() }, t('firstLight')) : null)),
     ...deckEls,
@@ -176,7 +192,7 @@ function renderPractice() {
   const queue = practiceQueue(allCards(), now);
   if (!queue.length) { main.replaceChildren(el('p', {}, t('practiceEmpty'))); return; }
   const card = queue[0];
-  const w = ALL_WORDS.find((x) => x.id === card.id);
+  const w = words().find((x) => x.id === card.id);
   const st = candleState(card, now);
 
   const answerBox = el('div', { class: 'answer', hidden: true });
@@ -199,14 +215,15 @@ function renderPractice() {
     reveal();
   } }, typed, el('button', { class: 'btn', type: 'submit' }, t('check')));
 
-  const hasVoice = voiceIds.has(w.id);
+  const voiced = hasVoice(w);
   main.replaceChildren(
     el('section', { class: 'flash' },
       candle(st, t(st)),
       el('p', { class: 'prompt' }, gloss(w)),
+      w.from ? el('p', { class: 'muted small' }, `${t('fromStory')} “${w.from}”`) : null,
       el('p', { class: 'muted' }, t('say')),
-      hasVoice ? el('button', { class: 'btn', type: 'button', onclick: () => playVoice(w.id) }, `▶ ${t('play')}`)
-               : el('p', { class: 'muted small' }, t('noVoice')),
+      voiced ? el('button', { class: 'btn', type: 'button', onclick: () => playVoice(w.id) }, `▶ ${t('play')}`)
+             : el('p', { class: 'muted small' }, t('noVoice')),
       form, feedback, revealBtn,
       el('div', { class: 'answer-wrap' }, answerBox)),
   );
@@ -216,7 +233,7 @@ function renderPractice() {
       [['forgot', 1], ['hard', 3], ['good', 4], ['easy', 5]].map(([k, g]) =>
         el('button', { class: `btn grade g${g}`, type: 'button', onclick: () => grade(g) }, t(k)))),
   );
-  if (hasVoice) answerBox.querySelector('.qu').addEventListener('click', () => playVoice(w.id));
+  if (voiced) answerBox.querySelector('.qu').addEventListener('click', () => playVoice(w.id));
 }
 
 let step = 0;
@@ -265,6 +282,18 @@ function renderAncestor() {
 }
 
 function render() {
+  if (view === 'harvest') {
+    renderHarvest({
+      main, el, t,
+      knownForms: () => words().flatMap((w) => [w.qu, ...(w.alt ?? [])]),
+      addFamilyWord: (w) => {
+        if (family.some((x) => x.id === w.id || normalize(x.qu) === normalize(w.qu))) return;
+        family = [...family, w];
+        store.saveFamily(family);
+      },
+    });
+    return;
+  }
   ({ altar: renderAltar, elder: renderElder, practice: renderPractice, ancestor: renderAncestor })[view]();
 }
 
