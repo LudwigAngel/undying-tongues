@@ -5,6 +5,7 @@ import { vitality, candleState, practiceQueue } from './core/vitality.js';
 import { isCorrect, startsWithAny } from './core/answer.js';
 import * as store from './storage.js';
 import { renderHarvest, playClip } from './views/harvest.js';
+import * as fx from './fx.js';
 import { normalize } from './core/answer.js';
 
 const main = document.getElementById('main');
@@ -93,22 +94,23 @@ function renderAltar() {
   const list = allCards();
   const v = vitality(list, now);
   const pct = Math.round(v * 100);
+  let idx = 0;
   const deckEls = decks().map((d) =>
     el('section', { class: 'deck' },
       el('h3', {}, d.title[prefs.lang]),
       el('ul', { class: 'candles' },
         d.words.map((w) => {
           const st = candleState(cardFor(w.id), now);
-          return el('li', { class: 'word' },
+          return el('li', { class: `word st-${st}`, style: `--i:${idx++}` },
             candle(st, `${w.qu}: ${t(st)}`),
-            el('span', { class: 'qu' }, w.qu),
+            el('span', { class: w.qu.length > 12 ? 'qu long' : 'qu' }, w.qu),
             el('span', { class: 'gl' }, gloss(w)),
             hasVoice(w) ? el('button', { class: 'voice-dot', type: 'button', title: t('play'), 'aria-label': `${t('play')} ${w.qu}`,
               onclick: () => playVoice(w.id) }, '🎙') : null);
         }))));
 
   main.replaceChildren(
-    el('section', { class: 'hero' },
+    el('section', { class: 'hero', style: `--hero-v:${v}` },
       el('div', { class: 'meter', style: `--v:${v}` },
         el('div', { class: 'meter-flame', 'aria-hidden': 'true' }),
         el('div', { class: 'meter-num' }, `${pct}%`)),
@@ -122,6 +124,7 @@ function renderAltar() {
           onclick: () => document.querySelector('[data-view=practice]').click() }, t('firstLight')) : null)),
     ...deckEls,
   );
+  fx.countUp(main.querySelector('.meter-num'), pct);
 }
 
 function renderElder() {
@@ -200,9 +203,10 @@ function renderPractice() {
   const typed = el('input', { 'aria-label': t('typeIt'), placeholder: t('typeIt'), autocomplete: 'off', spellcheck: 'false' });
 
   const grade = (g) => {
+    if (g >= 4) fx.burst(main.querySelector('.flash .candle'), 14);
     cards[card.id] = review(card, g, Date.now());
     store.saveCards(cards);
-    renderPractice();
+    setTimeout(() => { renderPractice(); fx.enter(main); }, g >= 4 ? 260 : 0);
   };
   const reveal = () => { answerBox.hidden = false; revealBtn.hidden = true; };
   const revealBtn = el('button', { class: 'btn primary', type: 'button', onclick: reveal }, t('reveal'));
@@ -213,6 +217,8 @@ function renderPractice() {
     feedback.textContent = ok ? t('right') : `${t('wrong')} ${w.qu}`;
     feedback.className = `feedback ${ok ? 'ok' : 'bad'}`;
     reveal();
+    if (ok) fx.burst(main.querySelector('.flash .candle'), 24);
+    else fx.shake(main.querySelector('.flash'));
   } }, typed, el('button', { class: 'btn', type: 'submit' }, t('check')));
 
   const voiced = hasVoice(w);
@@ -263,8 +269,10 @@ function renderAncestor() {
       step += 1;
       if (step < DIALOGUE.length) pushAncestor();
       else log.push({ who: 'ancestor', text: '✦', gloss: t('ancestorDone') });
+      setTimeout(() => fx.burst([...main.querySelectorAll('.msg.ancestor')].at(-1), step >= DIALOGUE.length ? 30 : 10), 50);
     } else {
       log.push({ who: 'ancestor', text: '…', gloss: t('ancestorRetry') });
+      setTimeout(() => fx.shake(main.querySelector('.type-form')), 50);
     }
     renderAncestor();
   } }, input, el('button', { class: 'btn primary', type: 'submit' }, t('send')));
@@ -318,6 +326,7 @@ document.getElementById('guide-summon')?.addEventListener('click', () => {
 
 function render() {
   setTimeout(updateGuide, 150); // harvest renders asynchronously
+  fx.enter(main);
   if (view === 'harvest') {
     renderHarvest({
       main, el, t, lang: () => prefs.lang, onChange: () => updateGuide(),
@@ -335,6 +344,7 @@ function render() {
 
 (async function boot() {
   applyLang();
+  fx.startEmbers(document.getElementById('embers'));
   try { voiceIds = new Set(await store.listVoiceIds()); } catch { /* IndexedDB unavailable: app still works without voices */ }
   render();
 })();
