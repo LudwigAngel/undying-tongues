@@ -1,7 +1,7 @@
 // Family archive export/import and Crew Scribes suggestions inbox (.kiro/specs/crew-scribes).
-import { ARCHIVE_FORMAT, SUGGESTIONS_FORMAT, VERSION, validateArchive } from '../core/archive.js';
-import { validateSuggestion } from '../core/suggest.js';
-import * as store from '../storage.js';
+import { ARCHIVE_FORMAT, SUGGESTIONS_FORMAT, VERSION, validateArchive } from '../core/archive.js?v=5';
+import { validateSuggestion } from '../core/suggest.js?v=5';
+import * as store from '../storage.js?v=5';
 
 const INBOX_KEY = 'undying-tongues:suggestions:v1';
 

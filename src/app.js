@@ -1,12 +1,12 @@
-import { STRINGS } from './i18n.js';
-import { DECKS, ALL_WORDS, DIALOGUE, LANGUAGE } from './data/quechua.js';
-import { newCard, review } from './core/srs.js';
-import { vitality, candleState, practiceQueue } from './core/vitality.js';
-import { isCorrect, startsWithAny } from './core/answer.js';
-import * as store from './storage.js';
-import { renderHarvest, playClip } from './views/harvest.js';
-import * as fx from './fx.js';
-import { normalize } from './core/answer.js';
+import { STRINGS } from './i18n.js?v=5';
+import { DECKS, ALL_WORDS, DIALOGUE, LANGUAGE } from './data/quechua.js?v=5';
+import { newCard, review } from './core/srs.js?v=5';
+import { vitality, candleState, practiceQueue } from './core/vitality.js?v=5';
+import { isCorrect, startsWithAny } from './core/answer.js?v=5';
+import * as store from './storage.js?v=5';
+import { renderHarvest, playClip } from './views/harvest.js?v=5';
+import * as fx from './fx.js?v=5';
+import { normalize } from './core/answer.js?v=5';
 
 const main = document.getElementById('main');
 const prefs = store.loadPrefs();
@@ -20,7 +20,9 @@ const words = () => [...ALL_WORDS, ...family.map((w) => ({ ...w, deck: 'family' 
 const decks = () => (family.length ? [...DECKS, { ...FAMILY_DECK, words: family }] : DECKS);
 const hasVoice = (w) => voiceIds.has(w.id) || Boolean(w.clip);
 
-const t = (k) => STRINGS[prefs.lang][k] ?? STRINGS.en[k] ?? k;
+// Never show an internal key to a user: if a string is missing (e.g. a stale cached i18n.js),
+// fall back to English, then to nothing.
+const t = (k) => STRINGS[prefs.lang]?.[k] ?? STRINGS.en[k] ?? '';
 const gloss = (w) => w[prefs.lang] ?? w.en;
 const el = (tag, attrs = {}, ...kids) => {
   const n = document.createElement(tag);

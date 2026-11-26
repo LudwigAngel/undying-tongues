@@ -1,10 +1,10 @@
 // Story Harvest view (.kiro/specs/story-harvest). DOM glue only; logic lives in src/core/harvest.js.
-import { addMark, removeMark, segmentsFrom, propose } from '../core/harvest.js';
-import { normalize } from '../core/answer.js';
-import { analyse, formatAnalysis } from '../core/morph.js';
-import { validateSuggestion, applySuggestion } from '../core/suggest.js';
-import { exportArchive, importFile, loadInbox, saveInbox } from './archive-io.js';
-import * as store from '../storage.js';
+import { addMark, removeMark, segmentsFrom, propose } from '../core/harvest.js?v=5';
+import { normalize } from '../core/answer.js?v=5';
+import { analyse, formatAnalysis } from '../core/morph.js?v=5';
+import { validateSuggestion, applySuggestion } from '../core/suggest.js?v=5';
+import { exportArchive, importFile, loadInbox, saveInbox } from './archive-io.js?v=5';
+import * as store from '../storage.js?v=5';
 
 const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 
