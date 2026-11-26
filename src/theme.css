@@ -165,8 +165,21 @@ input:focus { border-color: var(--marigold); box-shadow: 0 0 0 3px rgba(255, 179
   .sky .stars, .sky .fog, .moon { animation: none !important; }
 }
 @media (max-width: 640px) {
-  .tabs { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; }
+  .tabs { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
   .tabs [role=tab] { white-space: nowrap; }
-  .moon { top: 5vh; right: 6vw; }
-  .hero { padding: 1rem; }
+  .moon { top: auto; bottom: 30vh; right: -18px; width: 64px; opacity: .55; }
+  .hero { padding: 1rem; gap: 1rem; flex-wrap: nowrap; align-items: center; }
+  .hero > div:last-child { min-width: 0; }
+  .hero h2 { font-size: 1.15rem; }
+  .hero .muted { display: none; }
+  .meter { width: 96px; height: 96px; flex: 0 0 96px; }
+  .meter::after { inset: 8px; }
+  .meter-flame { top: 14px; width: 16px; height: 28px; }
+  .meter-num { margin-top: 30px; font-size: 1.25rem; }
+  .first-light { font-size: .95rem; padding: .45rem .9rem; }
+  .brand h1 { font-size: 1.5rem; }
+  .tagline { font-size: .85rem; }
+  .guide { left: .75rem; right: .75rem; max-width: none; padding: .6rem .75rem; }
+  .guide-text { font-size: .85rem; }
 }
