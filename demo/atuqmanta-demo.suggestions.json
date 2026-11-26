@@ -1,0 +1,135 @@
+{
+  "format": "undying-tongues-suggestions",
+  "version": 1,
+  "archiveExportedAt": "2026-11-26T00:00:00.000Z",
+  "suggestions": [
+    {
+      "id": "dde6d662-d134-47ac-8eb1-57d6e503279f",
+      "storyId": "atuqmanta",
+      "segment": 0,
+      "field": "meaning",
+      "value": "el zorro en el cerro",
+      "rationale": "atuq = zorro (common Southern Quechua word, not yet in the family vocabulary); urqupi = urqu (cerro, known) + -pi (en, suffix table)",
+      "confidence": "medium",
+      "agent": "scribe-glossator",
+      "createdAt": "2026-11-26T15:24:30.089Z"
+    },
+    {
+      "id": "4fc8cdc0-8e02-434a-9d7f-63f33f373ffc",
+      "storyId": "atuqmanta",
+      "segment": 1,
+      "field": "meaning",
+      "value": "vive en mis casas",
+      "rationale": "wasiykunapi = wasi (casa) + -y (mi) + -kuna (plural) + -pi (en), all known or in the suffix table; tiyan = tiya- (vivir, estar sentado) + -n (3rd person), inferred",
+      "confidence": "medium",
+      "agent": "scribe-glossator",
+      "createdAt": "2026-11-26T15:24:36.219Z"
+    },
+    {
+      "id": "f837c9e5-0e3f-43ae-9367-8d3afce6a57b",
+      "storyId": "atuqmanta",
+      "segment": 3,
+      "field": "meaning",
+      "value": "la luna sale de noche",
+      "rationale": "killa = luna (known); tutapi = tuta (noche) + -pi (en); lluqsin = lluqsi- (salir) + -n (3rd person); tuta and lluqsi- are not yet family words",
+      "confidence": "medium",
+      "agent": "scribe-glossator",
+      "createdAt": "2026-11-26T15:24:38.233Z"
+    },
+    {
+      "id": "c671fb5f-0721-4e53-ab0f-4a9c2bc0d2a9",
+      "storyId": "atuqmanta",
+      "segment": 4,
+      "field": "meaning",
+      "value": "el zorro fue hacia la luna",
+      "rationale": "atuqqa = atuq (zorro) + -qa (topic); killaman = killa (luna) + -man (hacia), analysable; rirqan = ri- (ir) + -rqa (past) + -n (3rd person), inferred",
+      "confidence": "medium",
+      "agent": "scribe-glossator",
+      "createdAt": "2026-11-26T15:24:40.239Z"
+    },
+    {
+      "id": "1a99257e-68f5-44fa-afea-5a1fc29c5ff6",
+      "storyId": "atuqmanta",
+      "segment": 3,
+      "field": "morph",
+      "token": "tutapi",
+      "value": "tuta + -pi",
+      "rationale": "-pi (in, at) is in the suffix table; root tuta (night) is not yet a family word and needs confirmation by a speaker",
+      "confidence": "low",
+      "agent": "scribe-morphologist",
+      "createdAt": "2026-11-26T15:24:47.075Z"
+    },
+    {
+      "id": "b5cc6e2a-8a1b-41d1-99a6-0661100fde3b",
+      "storyId": "atuqmanta",
+      "segment": 4,
+      "field": "morph",
+      "token": "atuqqa",
+      "value": "atuq + -qa",
+      "rationale": "-qa (topic marker) is in the suffix table; root atuq (fox) is not yet a family word and needs confirmation by a speaker",
+      "confidence": "low",
+      "agent": "scribe-morphologist",
+      "createdAt": "2026-11-26T15:24:49.085Z"
+    },
+    {
+      "id": "c3f310b8-3de0-4626-8921-76dd266dacb1",
+      "storyId": "atuqmanta",
+      "segment": 3,
+      "field": "morph",
+      "token": "lluqsin",
+      "value": "lluqsi + -n",
+      "rationale": "verb root lluqsi- (to go out) + -n (3rd person singular, used here as in the suffix table's -n after vowel); root not yet a family word, needs speaker confirmation",
+      "confidence": "low",
+      "agent": "scribe-morphologist",
+      "createdAt": "2026-11-26T15:24:51.575Z"
+    },
+    {
+      "id": "71522fb0-599a-4e33-8f7b-4c79c0b9a85b",
+      "storyId": "atuqmanta",
+      "segment": 1,
+      "field": "morph",
+      "token": "tiyan",
+      "value": "tiya + -n",
+      "rationale": "verb root tiya- (to sit, to live) + -n (3rd person); root not yet a family word, needs speaker confirmation",
+      "confidence": "low",
+      "agent": "scribe-morphologist",
+      "createdAt": "2026-11-26T15:24:53.094Z"
+    },
+    {
+      "id": "c6e3b9b9-f16d-4d01-9b45-1d96542a17c7",
+      "storyId": "atuqmanta",
+      "segment": 4,
+      "field": "morph",
+      "token": "rirqan",
+      "value": "ri + -rqa + -n",
+      "rationale": "verb root ri- (to go) + -rqa (simple past, NOT in the app's suffix table) + -n (3rd person); both the root and -rqa need speaker confirmation",
+      "confidence": "low",
+      "agent": "scribe-morphologist",
+      "createdAt": "2026-11-26T15:24:55.052Z"
+    },
+    {
+      "id": "cf9ab032-2b28-4cdd-827f-23a884c61ee8",
+      "storyId": "atuqmanta",
+      "segment": 0,
+      "field": "alt",
+      "token": "urqupi",
+      "value": "orqopi",
+      "rationale": "the 1975 official alphabet writes o where the 1985 one writes u next to q: urqu / orqo",
+      "confidence": "high",
+      "agent": "scribe-orthographer",
+      "createdAt": "2026-11-26T15:25:01.165Z"
+    },
+    {
+      "id": "4e49cca3-2110-43b9-bce4-2d091bb4e1a2",
+      "storyId": "atuqmanta",
+      "segment": 3,
+      "field": "alt",
+      "token": "lluqsin",
+      "value": "lloqsin",
+      "rationale": "the 1975 alphabet uses o next to q: lluqsi- / lloqsi-",
+      "confidence": "high",
+      "agent": "scribe-orthographer",
+      "createdAt": "2026-11-26T15:25:03.157Z"
+    }
+  ]
+}
