@@ -126,7 +126,7 @@ export async function renderHarvest(ctx) {
             el('div', {}, el('span', { class: 'qu' }, s.title),
               el('span', { class: 'gl' }, `${s.elder} · ${fmt(s.duration)} · ${segmentsFrom(s.marks, s.duration).length} ${t('segments')}`)),
             el('div', { class: 'rec-actions' },
-              el('button', { class: 'btn primary', type: 'button', onclick: () => { openId = s.id; renderHarvest(ctx); } }, t('open')),
+              el('button', { class: 'btn primary', type: 'button', onclick: () => { openId = s.id; renderHarvest(ctx).then(ctx.onChange); } }, t('open')),
               el('button', { class: 'btn danger', type: 'button', onclick: async () => {
                 if (!confirm(t('confirmDelete'))) return;
                 await store.deleteStory(s.id); renderHarvest(ctx);
@@ -242,7 +242,7 @@ function renderStory(ctx, story) {
   }
 
   main.replaceChildren(
-    el('button', { class: 'btn ghost-btn', type: 'button', onclick: () => { URL.revokeObjectURL(url); openId = null; renderHarvest(ctx); } }, `← ${t('allStories')}`),
+    el('button', { class: 'btn ghost-btn', type: 'button', onclick: () => { URL.revokeObjectURL(url); openId = null; renderHarvest(ctx).then(ctx.onChange); } }, `← ${t('allStories')}`),
     el('section', { class: 'panel' },
       el('h2', {}, story.title), el('p', { class: 'muted' }, `${story.elder} · ${fmt(story.duration)}`),
       player, el('div', { class: 'rec-actions spaced' }, cut), el('p', { class: 'muted small' }, t('cutHint'))),

@@ -8,18 +8,31 @@ marked *(optional)* first.
 
 ---
 
-## 1 · Hook (0:00 – 0:15) · Problem
+## 1 · Hook: the app working (0:00 – 0:12)
 
-**Screen:** black. One candle lights up (the app's flame, full screen). Then fade into a short
-clip of an elder's hands, or a photo with consent. No faces needed.
+Judges ask to see the project running in the first 10–15 seconds, so the video opens on the app,
+not on a slide.
 
-**ES:** "Cada dos semanas muere una lengua en el mundo. No muere cuando desaparece del diccionario.
-Muere cuando el último abuelo deja de hablarla con sus nietos."
+**Screen:** fast cuts, no typing: (a) the grandmother's clip plays on a phrase card, (b) the child's
+answer `atuq urqupi` → "Correct! The flame grows." and the candle lights, (c) the altar with lit and
+ghost candles, Nina's bubble in the corner. On-screen text: **"Undying Tongues: an elder's voice
+becomes their grandchild's lesson."**
 
-**EN:** *Every two weeks a language dies. Not when it leaves the dictionary, but when the last
-grandparent stops speaking it to their grandchildren.*
+**ES:** "Esta es la voz de una abuela. Y este es su nieto, aprendiendo su lengua con ella."
 
-## 2 · Who and why (0:15 – 0:35)
+**EN:** *This is a grandmother's voice. And this is her grandchild, learning her language from it.*
+
+## 1b · Problem (0:12 – 0:22)
+
+**Screen:** one candle goes out, full screen.
+
+**ES:** "Cada pocas semanas muere una lengua en el mundo. Muere cuando el último abuelo deja de
+hablarla con sus nietos."
+
+**EN:** *Every few weeks a language dies. It dies when the last grandparent stops speaking it to
+their grandchildren.*
+
+## 2 · Who and why (0:22 – 0:35)
 
 **Screen:** map of Peru with "Runasimi (Quechua): ~8 million speakers" text, then the app title
 "Undying Tongues · Lenguas que no mueren".
@@ -106,6 +119,10 @@ them automatically, and language-ethics steering that taught the AI that p'uncha
 
 ## Recording checklist
 
+- [ ] Paste, never type live: keep the transcripts in a text file and paste them.
+- [ ] Cut every loading or waiting moment, and every pause or filler word.
+- [ ] Record in short clips (one per scene) so any part can be redone.
+- [ ] Show Kiro on screen in scene 7: a spec, a hook and the steering file, not just the terminal.
 - [ ] Elder recording only with spoken consent on camera or in writing; no face needed.
 - [ ] Before the take: clear the app data (fresh altar at 0 %) and have the demo archive ready.
 - [ ] Run the Crew Scribes for real before filming scene 5 (needs ~3.5 GB free RAM).

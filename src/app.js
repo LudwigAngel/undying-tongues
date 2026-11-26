@@ -282,10 +282,45 @@ function renderAncestor() {
   if (!done) input.focus();
 }
 
+// ---------- Nina, the candle spirit (guide) ----------
+// One line per state: always says what to press next, with a little mischief.
+let guideHidden = sessionStorage.getItem('undying-tongues:guide-hidden') === '1';
+function guideKey() {
+  const now = Date.now();
+  if (view === 'altar') {
+    const list = allCards();
+    const v = vitality(list, now);
+    if (v === 0) return 'g_altar_cold';
+    if (list.some((c) => candleState(c, now) === 'ghost')) return 'g_altar_ghost';
+    return v > 0.6 ? 'g_altar_bright' : 'g_altar_some';
+  }
+  if (view === 'harvest') return document.querySelector('.segments') ? 'g_harvest_story' : 'g_harvest';
+  return { elder: 'g_elder', practice: 'g_practice', ancestor: 'g_ancestor' }[view];
+}
+function updateGuide() {
+  const box = document.getElementById('guide');
+  if (!box) return;
+  box.hidden = guideHidden;
+  box.querySelector('.guide-text').textContent = t(guideKey());
+  box.querySelector('.guide-close').setAttribute('aria-label', t('g_close'));
+  box.querySelector('.guide-close').title = t('g_close');
+}
+document.querySelector('#guide .guide-close')?.addEventListener('click', () => {
+  guideHidden = true;
+  sessionStorage.setItem('undying-tongues:guide-hidden', '1');
+  updateGuide();
+});
+document.getElementById('guide-summon')?.addEventListener('click', () => {
+  guideHidden = false;
+  sessionStorage.removeItem('undying-tongues:guide-hidden');
+  updateGuide();
+});
+
 function render() {
+  setTimeout(updateGuide, 150); // harvest renders asynchronously
   if (view === 'harvest') {
     renderHarvest({
-      main, el, t, lang: () => prefs.lang,
+      main, el, t, lang: () => prefs.lang, onChange: () => updateGuide(),
       knownForms: () => words().flatMap((w) => [w.qu, ...(w.alt ?? [])]),
       addFamilyWord: (w) => {
         if (family.some((x) => x.id === w.id || normalize(x.qu) === normalize(w.qu))) return;
